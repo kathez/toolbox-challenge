@@ -3,21 +3,29 @@
  */
 
 $(document).ready(function() {
+    var pre_tile;
+    var count = 0;
+
+    //select 8 tiles
     var tiles = [];
     var idx; //loop variable
     for (idx = 1; idx <= 32; ++idx) {
         tiles.push({
            tileNum: idx,
-           src: 'img/tile' + idx + '.jpg'
+           src: 'img/tile' + idx + '.jpg',
+           flipped: false
         });
     }
 
     console.log(tiles);
+
     var shuffledTiles = _.shuffle(tiles);
     console.log(shuffledTiles);
 
     var selectedTiles = shuffledTiles.slice(0, 8);
     console.log(selectedTiles);
+
+
 
     var tilePairs = [];
     _.forEach(selectedTiles, function(tile) {
@@ -25,8 +33,10 @@ $(document).ready(function() {
         tilePairs.push(_.clone(tile));
     });
 
+
+
     tilePairs = _.shuffle(tilePairs);
-    console.log(tilePairs);
+
 
     //below is code for grid
 
@@ -49,20 +59,27 @@ $(document).ready(function() {
     });
     gameBoard.append(row);
 
+    //working here!!!
     $('#game-board img').click(function() {
-       var img = $(this);
-       var tile = img.data('tile'); //better to create a variable to hold this value
-       img.fadeOut(100, function() {
-           if (tile.flipped) {
-               img.attr('src', 'img/tile-back.png');
-           } else {
-               img.attr('src', tile.src);
-           }
-           tile.flipped = !tile.flipped;
-           img.fadeIn(100);
-       }); //after fadeOut
-
+        var img = $(this);
+        var tile = img.data('tile');
+        if (count < 2 && !tile.flipped) {
+            animateFlip(img, tile);
+            count++;
+        }
     }); // on click of gameboard image
+
+    function animateFlip(img, tile) {
+        img.fadeOut(100, function() {
+            if (tile.flipped) {
+                img.attr('src', 'img/tile-back.png');
+            } else {
+                img.attr('src', tile.src);
+            }
+            tile.flipped = !tile.flipped;
+            img.fadeIn(100);
+        });
+    }
 
     var startTime = _.now();
     var timer = window.setInterval(function() {
