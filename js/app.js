@@ -92,17 +92,19 @@ $(document).ready(function() {
                 console.log("they match")
                 //tiles match, do count match num
                 match++;
-                console.log("now previous tile's number should be undefined, and it is " + pre_tile.tileNum);
             }
             else {
                 miss++;
                 //set time out 1 sec, and flip them back
-                animateFlip(img, tile)
-                animateFlip(pre_img, pre_tile);
+                console.log("now previous tile's number is " + pre_tile.tileNum);
+                setTimeout(function() {
+                    animateFlip(pre_img, pre_tile);
+                    animateFlip(img, tile);
+                }, 1000);
+
             }
             pre_img = "";
             pre_tile = "";
-            console.log(pre_img.src);
         }
 
     }); // on click of gameboard image
