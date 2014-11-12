@@ -3,8 +3,14 @@
  */
 
 $(document).ready(function() {
-    var pre_tile;
     var count = 0;
+    var pre_tile;
+    var pre_img;
+    var match = 0;
+    var miss = 0;
+    var has_pre = false;
+    var flip_wrong_match;
+
 
     //select 8 tiles
     var tiles = [];
@@ -59,14 +65,46 @@ $(document).ready(function() {
     });
     gameBoard.append(row);
 
+
     //working here!!!
+    //no need for count
     $('#game-board img').click(function() {
         var img = $(this);
         var tile = img.data('tile');
-        if (count < 2 && !tile.flipped) {
-            animateFlip(img, tile);
-            count++;
+        if (tile.flipped) {
+            return;
         }
+        //console.log(pre_tile.tileNum + " is previous tile");
+        if (!pre_img) {
+            //first move of the turn
+            pre_img = img;
+            pre_tile = img.data('tile');
+            has_pre = true;
+            console.log("this is your first move. the tile number is " + pre_tile.tileNum);
+            animateFlip(img, tile);
+        }
+        else {
+            animateFlip(img, tile);
+            console.log("Now you enter second move of the turn. The previous tile number is " + pre_tile.tileNum
+                + ", and current one's is " + tile.tileNum);
+            //second move of the turn
+            if (tile.tileNum == pre_tile.tileNum) {
+                console.log("they match")
+                //tiles match, do count match num
+                match++;
+                console.log("now previous tile's number should be undefined, and it is " + pre_tile.tileNum);
+            }
+            else {
+                miss++;
+                //set time out 1 sec, and flip them back
+                animateFlip(img, tile)
+                animateFlip(pre_img, pre_tile);
+            }
+            pre_img = "";
+            pre_tile = "";
+            console.log(pre_img.src);
+        }
+
     }); // on click of gameboard image
 
     function animateFlip(img, tile) {
@@ -80,13 +118,13 @@ $(document).ready(function() {
             img.fadeIn(100);
         });
     }
-
+    console.log(miss);
     var startTime = _.now();
     var timer = window.setInterval(function() {
         var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
-        $('#elapsed-seconds').text(elapsedSeconds);
+        $('#elapsed-seconds').text("Time Used: " + elapsedSeconds + "; Missed: " + miss + "; Matched: " + match);
 
-        if (elapsedSeconds >= 10) {
+        if (match == 8) {
             window.clearInterval(timer);
         } // to stop timer
     }, 1000);
