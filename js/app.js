@@ -92,6 +92,8 @@ $(document).ready(function() {
                 console.log("they match")
                 //tiles match, do count match num
                 match++;
+                pre_img = "";
+                pre_tile = "";
             }
             else {
                 miss++;
@@ -100,11 +102,11 @@ $(document).ready(function() {
                 setTimeout(function() {
                     animateFlip(pre_img, pre_tile);
                     animateFlip(img, tile);
+                    pre_img = "";
+                    pre_tile = "";
                 }, 1000);
 
             }
-            pre_img = "";
-            pre_tile = "";
         }
 
     }); // on click of gameboard image
