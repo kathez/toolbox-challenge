@@ -68,51 +68,51 @@ $(document).ready(function() {
 
         });
         gameBoard.append(row);
+        $('#game-board img').click(function() {
+
+            var img = $(this);
+            var tile = img.data('tile');
+            if (tile.flipped) {
+                return;
+            }
+            //console.log(pre_tile.tileNum + " is previous tile");
+            if (!pre_img) {
+                //first move of the turn
+                pre_img = img;
+                pre_tile = img.data('tile');
+                console.log("this is your first move. the tile number is " + pre_tile.tileNum);
+                animateFlip(img, tile);
+            }
+            else {
+                animateFlip(img, tile);
+                console.log("Now you enter second move of the turn. The previous tile number is " + pre_tile.tileNum
+                    + ", and current one's is " + tile.tileNum);
+                //second move of the turn
+                if (tile.tileNum == pre_tile.tileNum) {
+                    console.log("they match")
+                    //tiles match, do count match num
+                    match++;
+                    pre_img = "";
+                    pre_tile = "";
+                }
+                else {
+                    miss++;
+                    //set time out 1 sec, and flip them back
+                    console.log("now previous tile's number is " + pre_tile.tileNum);
+                    setTimeout(function() {
+                        animateFlip(pre_img, pre_tile);
+                        animateFlip(img, tile);
+                        pre_img = "";
+                        pre_tile = "";
+                    }, 1000);
+
+                }
+            }
+
+        }); // on click of gameboard image
 
     }
 
-    $('#game-board img').click(function() {
-
-        var img = $(this);
-        var tile = img.data('tile');
-        if (tile.flipped) {
-            return;
-        }
-        //console.log(pre_tile.tileNum + " is previous tile");
-        if (!pre_img) {
-            //first move of the turn
-            pre_img = img;
-            pre_tile = img.data('tile');
-            console.log("this is your first move. the tile number is " + pre_tile.tileNum);
-            animateFlip(img, tile);
-        }
-        else {
-            animateFlip(img, tile);
-            console.log("Now you enter second move of the turn. The previous tile number is " + pre_tile.tileNum
-                + ", and current one's is " + tile.tileNum);
-            //second move of the turn
-            if (tile.tileNum == pre_tile.tileNum) {
-                console.log("they match")
-                //tiles match, do count match num
-                match++;
-                pre_img = "";
-                pre_tile = "";
-            }
-            else {
-                miss++;
-                //set time out 1 sec, and flip them back
-                console.log("now previous tile's number is " + pre_tile.tileNum);
-                setTimeout(function() {
-                    animateFlip(pre_img, pre_tile);
-                    animateFlip(img, tile);
-                    pre_img = "";
-                    pre_tile = "";
-                }, 1000);
-
-            }
-        }
-
-    }); // on click of gameboard image
 
     function animateFlip(img, tile) {
         img.fadeOut(100, function() {
