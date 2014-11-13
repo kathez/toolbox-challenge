@@ -8,67 +8,71 @@ $(document).ready(function() {
     var pre_img;
     var match = 0;
     var miss = 0;
-    var has_pre = false;
-    var flip_wrong_match;
+    var totalPairs = 8;
+    var remainingPairs;
+    var tilePairs = [];
+    var start = true;
 
+    $('#start').click(function() {
+        startGame();
+        start = !start;
+        match = 0;
+        miss = 0;
+        remainingPairs = 0;
+        gameInfo();
+    });
 
     //select 8 tiles
-    var tiles = [];
-    var idx; //loop variable
-    for (idx = 1; idx <= 32; ++idx) {
-        tiles.push({
-           tileNum: idx,
-           src: 'img/tile' + idx + '.jpg',
-           flipped: false
+    function startGame() {
+        var tiles = [];
+        var idx; //loop variable
+        for (idx = 1; idx <= 32; ++idx) {
+            tiles.push({
+                tileNum: idx,
+                src: 'img/tile' + idx + '.jpg',
+                flipped: false
+            });
+        }
+
+        console.log(tiles);
+
+        var shuffledTiles = _.shuffle(tiles);
+        console.log(shuffledTiles);
+
+        var selectedTiles = shuffledTiles.slice(0, 8);
+        console.log(selectedTiles);
+
+        _.forEach(selectedTiles, function (tile) {
+            tilePairs.push(_.clone(tile));
+            tilePairs.push(_.clone(tile));
         });
+
+        tilePairs = _.shuffle(tilePairs);
+
+        //build game board
+        var gameBoard = $('#game-board');
+        var row = $(document.createElement('div'));
+        var img;
+        _.forEach(tilePairs, function (tile, elemIndex) {
+            if (elemIndex > 0 && 0 == elemIndex % 4) {
+                gameBoard.append(row);
+                row = $(document.createElement('div'));
+            }
+            img = $(document.createElement('img'));
+            img.attr({
+                src: 'img/tile-back.png',
+                alt: 'image of tile ' + tile.tileNum
+            });
+            img.data('tile', tile);
+            row.append(img);
+
+        });
+        gameBoard.append(row);
+
     }
 
-    console.log(tiles);
-
-    var shuffledTiles = _.shuffle(tiles);
-    console.log(shuffledTiles);
-
-    var selectedTiles = shuffledTiles.slice(0, 8);
-    console.log(selectedTiles);
-
-
-
-    var tilePairs = [];
-    _.forEach(selectedTiles, function(tile) {
-        tilePairs.push(_.clone(tile));
-        tilePairs.push(_.clone(tile));
-    });
-
-
-
-    tilePairs = _.shuffle(tilePairs);
-
-
-    //below is code for grid
-
-    var gameBoard = $('#game-board');
-    var row = $(document.createElement('div'));
-    var img;
-    _.forEach(tilePairs, function(tile, elemIndex) {
-       if(elemIndex > 0 && 0 == elemIndex % 4) {
-           gameBoard.append(row);
-           row = $(document.createElement('div'));
-       }
-        img = $(document.createElement('img'));
-        img.attr({
-           src: 'img/tile-back.png',
-           alt: 'image of tile ' + tile.tileNum
-        });
-        img.data('tile', tile);
-        row.append(img);
-
-    });
-    gameBoard.append(row);
-
-
-    //working here!!!
-    //no need for count
     $('#game-board img').click(function() {
+
         var img = $(this);
         var tile = img.data('tile');
         if (tile.flipped) {
@@ -79,7 +83,6 @@ $(document).ready(function() {
             //first move of the turn
             pre_img = img;
             pre_tile = img.data('tile');
-            has_pre = true;
             console.log("this is your first move. the tile number is " + pre_tile.tileNum);
             animateFlip(img, tile);
         }
@@ -122,15 +125,19 @@ $(document).ready(function() {
             img.fadeIn(100);
         });
     }
-    console.log(miss);
-    var startTime = _.now();
-    var timer = window.setInterval(function() {
-        var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
-        $('#elapsed-seconds').text("Time Used: " + elapsedSeconds + "; Missed: " + miss + "; Matched: " + match);
 
-        if (match == 8) {
-            window.clearInterval(timer);
-        } // to stop timer
-    }, 1000);
+    function gameInfo() {
+        var startTime = _.now();
+        remainingPairs = totalPairs - match;
+        var timer = window.setInterval(function () {
+            var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
+            $('#elapsed-seconds').text("Time Used: " + elapsedSeconds + "; Missed: " + miss + "; Matched: " + match
+            + "Remaining Pairs: " + remainingPairs);
+
+            if (match == 8) {
+                window.clearInterval(timer);
+            } // to stop timer
+        }, 1000);
+    }
 
 });
