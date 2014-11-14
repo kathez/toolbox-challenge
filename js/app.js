@@ -14,7 +14,7 @@ $(document).ready(function() {
     var start = true;
 
     $('#start').click(function() {
-        //need to clear the previous game away 
+        //need to clear the previous game away
         startGame();
         start = !start;
         match = 0;
