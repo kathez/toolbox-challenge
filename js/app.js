@@ -14,6 +14,7 @@ $(document).ready(function() {
     var start = true;
 
     $('#start').click(function() {
+        //need to clear the previous game away 
         startGame();
         start = !start;
         match = 0;
@@ -80,13 +81,10 @@ $(document).ready(function() {
                 //first move of the turn
                 pre_img = img;
                 pre_tile = img.data('tile');
-                console.log("this is your first move. the tile number is " + pre_tile.tileNum);
                 animateFlip(img, tile);
             }
             else {
                 animateFlip(img, tile);
-                console.log("Now you enter second move of the turn. The previous tile number is " + pre_tile.tileNum
-                    + ", and current one's is " + tile.tileNum);
                 //second move of the turn
                 if (tile.tileNum == pre_tile.tileNum) {
                     console.log("they match")
@@ -98,7 +96,6 @@ $(document).ready(function() {
                 else {
                     miss++;
                     //set time out 1 sec, and flip them back
-                    console.log("now previous tile's number is " + pre_tile.tileNum);
                     setTimeout(function() {
                         animateFlip(pre_img, pre_tile);
                         animateFlip(img, tile);
