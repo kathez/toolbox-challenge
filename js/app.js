@@ -10,11 +10,16 @@ $(document).ready(function() {
     var miss = 0;
     var totalPairs = 8;
     var remainingPairs;
-    var tilePairs = [];
     var start = true;
+    var gameBoard;
+    var tilePairs = [];
+    var timer;
 
     $('#start').click(function() {
         //need to clear the previous game away
+        window.clearInterval(timer);
+        tilePairs = [];
+        $('#game-board').empty();
         startGame();
         start = !start;
         match = 0;
@@ -51,7 +56,8 @@ $(document).ready(function() {
         tilePairs = _.shuffle(tilePairs);
 
         //build game board
-        var gameBoard = $('#game-board');
+
+        gameBoard = $('#game-board');
         var row = $(document.createElement('div'));
         var img;
         _.forEach(tilePairs, function (tile, elemIndex) {
@@ -126,7 +132,8 @@ $(document).ready(function() {
     function gameInfo() {
         var startTime = _.now();
         remainingPairs = totalPairs - match;
-        var timer = window.setInterval(function () {
+
+        timer = window.setInterval(function () {
             var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
             $('#elapsed-seconds').text("Time Used: " + elapsedSeconds + "; Missed: " + miss + "; Matched: " + match
             + "Remaining Pairs: " + remainingPairs);
