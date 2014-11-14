@@ -79,25 +79,29 @@ $(document).ready(function() {
 
             var img = $(this);
             var tile = img.data('tile');
-            if (tile.flipped) {
+            if (tile.flipped || count > 1) {
                 return;
             }
             //console.log(pre_tile.tileNum + " is previous tile");
             if (!pre_img) {
+                count++;
                 //first move of the turn
                 pre_img = img;
                 pre_tile = img.data('tile');
                 animateFlip(img, tile);
             }
             else {
+                count++;
                 animateFlip(img, tile);
                 //second move of the turn
                 if (tile.tileNum == pre_tile.tileNum) {
                     console.log("they match")
                     //tiles match, do count match num
                     match++;
+                    remainingPairs = totalPairs - match;
                     pre_img = "";
                     pre_tile = "";
+                    count = 0;
                 }
                 else {
                     miss++;
@@ -107,6 +111,7 @@ $(document).ready(function() {
                         animateFlip(img, tile);
                         pre_img = "";
                         pre_tile = "";
+                        count = 0;
                     }, 1000);
 
                 }
@@ -131,7 +136,7 @@ $(document).ready(function() {
 
     function gameInfo() {
         var startTime = _.now();
-        remainingPairs = totalPairs - match;
+
 
         timer = window.setInterval(function () {
             var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
