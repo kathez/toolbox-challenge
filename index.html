@@ -7,9 +7,18 @@
     <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
-    <h1>Memory!</h1>
-    <p id="elapsed-seconds"></p>
-    <button id="start">Start</button>
+    <header>
+        <h1>Memory!</h1>
+        <div id="info">
+            <button id="start">Start</button>
+            <p><span id="elapsed-seconds"></span></p>
+            <p><span id="missed-tiles"></span></p>
+            <p><span id="matched-tiles"></span></p>
+            <p><span id="remaining-tiles"></span></p>
+        </div>
+    </header>
+
+
 
     <div id="game-board"></div>
 

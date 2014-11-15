@@ -1,6 +1,59 @@
+@import url(http://fonts.googleapis.com/css?family=Patrick+Hand);
 
 #game-board img {
     width: 150px;
     height: 150px;
     margin-right: 5px;
 }
+
+#game-board {
+    margin: auto;
+    width: 40em;
+    clear: both;
+    margin-top: 1em;
+}
+
+#start,
+#elapsed-seconds,
+#missed-tiles,
+#matched-tiles,
+#remaining-tiles {
+    float: left;
+    margin-right: 1em;
+    text-align: center;
+    /*font-family: 'Patrick Hand', 'Helvetica Neue', 'Helvetica', sans-serif;*/
+}
+
+header {
+    background-color: rgba(241,228,178,0.8);
+    overflow: hidden;
+    padding: 1em;
+    margin: 2em;
+    border-radius: 20px;
+}
+
+#start {
+    background-color: #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius:6px;
+    color: #fff;
+    font-family: 'Oswald';
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    border:none;
+}
+
+body {
+    background-image: url(../img/header-background-image.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Patrick Hand', 'Helvetica Neue', 'Helvetica', sans-serif;
+
+}
+
+
+
+

@@ -137,14 +137,16 @@ $(document).ready(function() {
     function gameInfo() {
         var startTime = _.now();
 
-
         timer = window.setInterval(function () {
             var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
-            $('#elapsed-seconds').text("Time Used: " + elapsedSeconds + "; Missed: " + miss + "; Matched: " + match
-            + "Remaining Pairs: " + remainingPairs);
+            $('#elapsed-seconds').text("Time: " + elapsedSeconds);
+            $('#missed-tiles').text("Missed: " + miss);
+            $('#matched-tiles').text("Matched: " + match);
+            $('#remaining-tiles').text("Remaining Pairs: " + remainingPairs);
 
             if (match == 8) {
                 window.clearInterval(timer);
+                alert("You win!!!");
             } // to stop timer
         }, 1000);
     }
